@@ -13,8 +13,8 @@ all: lib.o main.o
 	$(CC) $(FLAGS) $(LDIR)/lib.o $(SDIR)/main.o -o $(BIN)
 
 allg: lib.o main.o
-	$(CC) $(FLAGS) -f -O0 $(LDIR)/lib.o $(SDIR)/main.o -o $(BIN)
-	valgrind -v $(BIN)
+	$(CC) $(FLAGS) -g -O0 $(LDIR)/lib.o $(SDIR)/main.o -o $(BIN)
+	valgrind -v ./$(BIN)
 
 lib.o:
 	make -C $(LDIR)
