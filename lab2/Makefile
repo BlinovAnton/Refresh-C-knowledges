@@ -1,12 +1,13 @@
-.PHONY: all all_debug clean clean_all
+.PHONY: all all_debug clean clean_all test
 
 CC = gcc
 FLAGS = -Werror -Wall
 LDIR = Lib
 SDIR = Src
 BIN = prog
+BIN_TEST = test_list
 
-all: main.o list.o menu.o
+all: clean_all main.o list.o menu.o
 	$(CC) $(FLAGS) -o $(BIN) $(LDIR)/menu.o $(LDIR)/list.o $(SDIR)/main.o
 
 all_debug:
@@ -23,8 +24,13 @@ list.o:
 main.o:
 	make -C $(SDIR) $@
 
+#For stupidly test libs without menu
+test:
+	make -D $(LDIR) debug
+	$(CC) $(FLAGS) -g -O0 -o $(BIN_TEST) -I./Inc $(LDIR)/list.o test_list.c
+
 clean:
-	rm -f $(BIN)
+	rm -f $(BIN) $(BIN_TEST)
 
 clean_all: clean
 	make -C $(SDIR) clean

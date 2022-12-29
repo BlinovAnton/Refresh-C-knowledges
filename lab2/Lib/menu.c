@@ -4,8 +4,8 @@ __uint8_t glob_menu()
 {
     __uint32_t menu = 0;
     list_ *list = NULL;
-#if 1
-    printf("!glob_menu: addr %p val %p -> smth\n", &list, list);
+#if DEBUG
+    printf("glob_menu(s): addr %p val %p -> 0x0\n", &list, list);
 #endif
 
     while (menu != MENU_EXIT)
@@ -43,8 +43,9 @@ __uint8_t list_menu(list_ **list)
     __uint32_t val = 0;
     __int32_t temp = 10;
 
-#if 1
-    printf("!list_menu: addr %p val %p -> %p -> smth\n", &list, list, *list);
+#if DEBUG
+    printf("list_menu(s): addr %p val %p -> %p -> %s\n",
+           &list, list, *list, *list ? "smth" : "0x0");
 #endif
     while (menu != MENU_LIST_EXIT)
     {
@@ -58,7 +59,7 @@ __uint8_t list_menu(list_ **list)
 	switch(menu)
 	{
 	    case MENU_LIST_ADD:
-		printf("[%p]Input val to add: ", *list);
+		printf("Input val to add: ");
 		scanf("%u", &val);
 		if (!*list)
 		    temp = list_init(list);

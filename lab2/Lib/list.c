@@ -2,8 +2,8 @@
 
 __int8_t list_init(list_ **list)
 {
-#if 1
-    printf("!list_init: addr %p val %p -> %p -> smth\n", &list, list, *list);
+#if DEBUG
+    printf("list_init(s): addr %p val %p -> list:%p -> 0x0\n", &list, list, *list);
 #endif
     *list = (list_ *)malloc(sizeof(list_));
     if (!*list)
@@ -12,36 +12,51 @@ __int8_t list_init(list_ **list)
     (*list)->head = NULL;
     (*list)->tail = NULL;
 
-#if 1
-    printf("!list_init: addr %p val %p -> %p -> smth\n", &list, list, *list);
+#if DEBUG
+    printf("list_init(f): addr %p val %p -> list:%p -> 0x0\n", &list, list, *list);
 #endif
     return EXIT_SUCCESS;
 }
 
 __int8_t list_add(list_ **list, __uint32_t val)
 {
+#if DEBUG
+    printf("list_add(s): addr %p val %p -> list:%p -> head=%d, tail=%d\n",
+           &list, list, *list, (*list)->head ? (*list)->head->val : 0,
+           (*list)->tail ? (*list)->tail->val : 0);
+#endif
     if (!*list)
 	return EXIT_FAILURE;
 
-    /* Init node */
-    listnode_ *node = NULL;
-    node = (listnode_ *)malloc(sizeof(listnode_));
-    if (!node)
-	return EXIT_FAILURE;
-    node->val = val;
-    node->next = NULL;
-
-    /* Connect pointers (adding) */
+    /* Set new val pointer */
+    listnode_ **node = NULL;
     if (!(*list)->head)
     {
-	(*list)->head = node;
-	(*list)->tail = node;
+#if DEBUG
+	printf("list_add: Try add %d in empty list\n", val);
+#endif
+	node = &((*list)->head);
     }
     else
     {
-	(*list)->tail->next = node;
-	(*list)->tail = node;
+#if DEBUG
+	printf("list_add: Try add %d in non-empty list\n", val);
+#endif
+	node = &((*list)->tail->next);
     }
+
+    /* Init node */
+    *node = (listnode_ *)malloc(sizeof(listnode_));
+    (*node)->val = val;
+    (*node)->next = NULL;
+
+    /* Set new correct tail pointer */
+    (*list)->tail = *node;
+#if DEBUG
+    printf("list_add(f): addr %p val %p -> list:%p -> head=%d, tail=%d\n",
+           &list, list, *list, (*list)->head ? (*list)->head->val : 0,
+           (*list)->tail ? (*list)->tail->val : 0);
+#endif
 
     return EXIT_SUCCESS;
 }
@@ -102,9 +117,6 @@ __int8_t list_free(list_ **list)
 
 __int8_t list_print(list_ **list)
 {
-#if 1
-    printf("!list_print: addr %p val %p -> %p -> smth\n", &list, list, *list);
-#endif
     listnode_ *node = NULL;
     if (!*list)
     {
@@ -119,7 +131,7 @@ __int8_t list_print(list_ **list)
     }
 
     printf("List:");
-    for (node = (*list)->head; node->next != NULL; node = node->next)
+    for (node = (*list)->head; node != NULL; node = node->next)
     {
 	printf(" %u", node->val);
     }
