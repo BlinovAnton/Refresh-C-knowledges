@@ -1,0 +1,3 @@
+Programm writen to refresh knowledges of coding data structures
+To create executable, you need write at console 'make all'
+Makefile at path 'Refresh-C-knowledges/lab2/Makefile'

@@ -7,6 +7,9 @@ SDIR = Src
 BIN = prog
 BIN_TEST = test_list
 
+$(BIN):
+	$(CC) $(FLAGS) -o $(BIN) $(LDIR)/menu.o $(LDIR)/list.o $(SDIR)/main.o
+
 all: clean_all main.o list.o menu.o
 	$(CC) $(FLAGS) -o $(BIN) $(LDIR)/menu.o $(LDIR)/list.o $(SDIR)/main.o
 
@@ -26,8 +29,9 @@ main.o:
 
 #For stupidly test libs without menu
 test:
-	make -D $(LDIR) debug
+	make -C $(LDIR) debug
 	$(CC) $(FLAGS) -g -O0 -o $(BIN_TEST) -I./Inc $(LDIR)/list.o test_list.c
+	valgrind -v ./$(BIN_TEST)
 
 clean:
 	rm -f $(BIN) $(BIN_TEST)

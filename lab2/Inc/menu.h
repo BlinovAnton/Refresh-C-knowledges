@@ -9,6 +9,7 @@ enum main_menu_stages
 {
     MENU_LIST = 1,
     MENU_TREE,
+    MENU_MYDS,
     MENU_EXIT
 };
 
