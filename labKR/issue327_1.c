@@ -3,6 +3,8 @@
 /*     and number of negative elements at array         */
 /********************************************************/
 
+/* NOT FINISHED */
+
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
