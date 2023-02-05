@@ -60,13 +60,8 @@ int main ()
 	}
     }
 
-#if 0
-    /* Test how to make 'the rightest' bit (which is eq 1) to 0 */
-    int x = 113;
-    for (; x != 0; x &= (x - 1))
-    {
-	printf("x = %d\n", x);
-    }
+#if DYNAMIC_ARR
+    free(bit_opers);
 #endif
 
     return 0;
